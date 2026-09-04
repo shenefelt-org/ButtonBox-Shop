@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-Rails.application.config.supabase.url = ENV["SUPABASE_URL"]
-Rails.application.config.supabase.key = ENV["SUPABASE_ANON_KEY"]
-Rails.application.config.supabase.jwt_algorithms = ["ES256", "HS256"]
+Rails.application.config.supabase.jwt_algorithms = [ "ES256", "HS256" ]
 
 Rails.application.config.supabase.mode = :web
 

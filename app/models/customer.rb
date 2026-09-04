@@ -1,7 +1,11 @@
-# app/models/customer.rb
 class Customer < ApplicationRecord
-  has_many :quotes, dependent: :nullify
+    has_one :address, dependent: :destroy
 
-  validates :name, presence: true
-  validates :email_address, format: { with: URI::MailTo::EMAIL_REGEXP }, allow_blank: true
+    def print_info_to_console
+        puts "Customer: #{first_name} #{last_name}"
+        puts "Address: #{address.street_address}"
+        puts "State: #{address.state}"
+        puts "City: #{address.city}"
+        puts "Zip: #{address.zip}"
+    end
 end

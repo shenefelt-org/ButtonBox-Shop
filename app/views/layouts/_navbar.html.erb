@@ -1,0 +1,28 @@
+<nav class="bg-white border-b border-surface-border shadow-[0_4px_20px_rgba(104,95,214,0.05)] sticky top-0 z-[100]">
+  <div class="max-w-[1000px] mx-auto px-6 h-16 flex justify-between items-center">
+    <!-- Home Link -->
+    <div class="flex items-center h-full">
+      <a href="/" class="text-periwinkle-dark hover:text-periwinkle text-xl font-bold tracking-tight transition-colors duration-200 no-underline leading-none flex items-center">
+        home
+      </a>
+    </div>
+
+    <!-- Login/Logout Button -->
+    <div class="flex items-center gap-4 h-full">
+      <% active_usr = current_user || (defined?(Current) && Current.user) %>
+      <% if active_usr.present? %>
+        <% current_user_email = active_usr.try(:email_address) || active_usr.try(:email) %>
+        <% if current_user_email.present? %>
+          <span class="bg-periwinkle-light border border-surface-subtle px-3 py-1.5 rounded-md text-xs text-periwinkle-dark font-semibold flex items-center self-center">
+            <%= current_user_email %>
+          </span>
+        <% end %>
+        <%= button_to "Logout", logout_path, method: :delete, class: "bg-transparent border-0 text-nav-muted hover:text-periwinkle text-sm font-semibold p-0 transition-colors duration-200 cursor-pointer flex items-center h-full", form_class: "m-0 flex items-center h-full" %>
+      <% else %>
+        <a href="/session/new" class="bg-periwinkle hover:bg-periwinkle-dark text-white px-4 py-2 rounded-md text-sm font-semibold transition-colors duration-200 no-underline flex items-center">
+          Login
+        </a>
+      <% end %>
+    </div>
+  </div>
+</nav>

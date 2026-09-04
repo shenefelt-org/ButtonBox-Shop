@@ -1,1 +1,18 @@
 @import "tailwindcss";
+
+
+@theme {
+  --font-sans: "Raleway", ui-sans-serif, system-ui, sans-serif;
+
+  --color-periwinkle: #685FD6;
+  --color-periwinkle-dark: #4C4682;
+  --color-periwinkle-light: #F0F2FC;
+
+  --color-surface-bg: #FAFBFD;
+  --color-surface-text: #2D2B4A;
+  --color-surface-border: #EAEFFC;
+  --color-surface-subtle: #E0E3F6;
+
+  --color-nav-text: #7973A8;
+  --color-nav-muted: #8C87B3;
+}
