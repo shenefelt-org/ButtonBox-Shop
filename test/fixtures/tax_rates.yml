@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  state: MyText
+  abbreviation: MyText
+  rate: 9.99
+
+two:
+  state: MyText
+  abbreviation: MyText
+  rate: 9.99
