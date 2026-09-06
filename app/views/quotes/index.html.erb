@@ -1,0 +1,165 @@
+<% content_for :title, "Quotes · ButtonBox" %>
+
+<style>
+  .q-page { max-width: 56rem; margin: 0 auto; padding: 1.5rem 1rem 2.5rem; color: #1F1B2E; }
+  .q-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1.25rem; border-bottom: 1px solid #E8E5F5; }
+  .q-title { margin: 0; font-size: 1.75rem; font-weight: 800; letter-spacing: -0.02em; color: #1F1B2E; line-height: 1.15; }
+  .q-sub { margin: 0.35rem 0 0; font-size: 0.875rem; color: #6B7280; }
+  .q-new { display: inline-flex; align-items: center; gap: 0.5rem; flex-shrink: 0; background: #6B5FD6; color: #fff !important; font-weight: 700; font-size: 0.875rem; padding: 0.7rem 1rem; border-radius: 0.75rem; text-decoration: none !important; box-shadow: 0 1px 2px rgba(107,95,214,0.25); white-space: nowrap; }
+  .q-new:hover { background: #5A4FC7; color: #fff !important; }
+
+  .q-stack { display: flex; flex-direction: column; gap: 0.85rem; }
+  .q-card { background: #fff; border: 1px solid #E8E5F5; border-radius: 1rem; padding: 1.1rem 1.15rem; box-shadow: 0 8px 24px rgba(104,95,214,0.07); }
+  .q-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.75rem; margin-bottom: 0.35rem; }
+  .q-num { font-size: 1.05rem; font-weight: 800; color: #1F1B2E !important; text-decoration: none !important; }
+  .q-num:hover { color: #6B5FD6 !important; }
+  .q-customer { margin: 0; font-size: 0.925rem; font-weight: 600; color: #4B5563 !important; }
+  .q-card-bottom { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; margin-top: 0.9rem; padding-top: 0.9rem; border-top: 1px solid #EEEAF8; }
+  .q-amount { font-size: 1.25rem; font-weight: 800; color: #5B4FCF !important; font-variant-numeric: tabular-nums; }
+
+  .q-badge { display: inline-flex; align-items: center; gap: 0.35rem; flex-shrink: 0; padding: 0.3rem 0.65rem; border-radius: 999px; font-size: 0.7rem; font-weight: 700; line-height: 1; }
+  .q-badge-dot { width: 0.4rem; height: 0.4rem; border-radius: 999px; }
+  .q-badge.is-approved { color: #526B13; background: rgba(163,201,68,0.18); border: 1px solid rgba(130,166,45,0.35); }
+  .q-badge.is-approved .q-badge-dot { background: #82A62D; }
+  .q-badge.is-pending { color: #B45309; background: #FFFBEB; border: 1px solid #FDE68A; }
+  .q-badge.is-pending .q-badge-dot { background: #F59E0B; }
+
+  .q-actions { display: flex; align-items: center; gap: 0.5rem; }
+  .q-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 2.35rem; padding: 0 0.9rem; border-radius: 0.65rem; font-size: 0.75rem; font-weight: 700; text-decoration: none !important; }
+  .q-btn-view { color: #4B5563 !important; background: #F5F3FF; border: 1px solid #E8E5F5; }
+  .q-btn-view:hover { color: #6B5FD6 !important; border-color: rgba(107,95,214,0.35); }
+  .q-btn-edit { color: #fff !important; background: #6B5FD6; border: 1px solid #6B5FD6; }
+  .q-btn-edit:hover { background: #5A4FC7; color: #fff !important; }
+
+  .q-empty { background: #fff; border: 1px solid #E8E5F5; border-radius: 1rem; padding: 3rem 1.5rem; text-align: center; box-shadow: 0 8px 24px rgba(104,95,214,0.07); }
+  .q-empty h3 { margin: 0 0 0.35rem; font-size: 1.125rem; font-weight: 800; color: #1F1B2E; }
+  .q-empty p { margin: 0 0 1.25rem; font-size: 0.9rem; color: #6B7280; }
+
+  /* Mobile only cards / desktop only table — real CSS, not Tailwind md: */
+  .q-desktop { display: none; }
+  .q-mobile { display: block; }
+
+  .q-table-wrap { background: #fff; border: 1px solid #E8E5F5; border-radius: 1rem; overflow: hidden; box-shadow: 0 8px 30px rgba(104,95,214,0.08); }
+  .q-table { width: 100%; border-collapse: collapse; text-align: left; }
+  .q-table th { padding: 0.95rem 1.15rem; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: #6B7280; background: #F8F7FC; border-bottom: 1px solid #E8E5F5; }
+  .q-table td { padding: 1.05rem 1.15rem; border-bottom: 1px solid #E8E5F5; vertical-align: middle; color: #1F1B2E; }
+  .q-table tr:last-child td { border-bottom: 0; }
+  .q-table tr:hover td { background: #FAFAFF; }
+  .q-table .q-num { font-size: 0.95rem; }
+  .q-table .q-amount { font-size: 1rem; }
+  .q-table .q-actions { justify-content: flex-end; }
+  .q-td-right { text-align: right; }
+
+  @media (min-width: 768px) {
+    .q-page { padding: 2.5rem 1.5rem; }
+    .q-title { font-size: 1.9rem; }
+    .q-mobile { display: none; }
+    .q-desktop { display: block; }
+  }
+
+  @media (max-width: 767px) {
+    .q-header { align-items: center; }
+    .q-new { padding: 0.65rem 0.9rem; }
+  }
+</style>
+
+<div class="q-page">
+  <div class="q-header">
+    <div>
+      <h1 class="q-title">Quotes</h1>
+      <p class="q-sub">
+        Manage customer estimates and approval status<% if @quotes.any? %> · <%= pluralize(@quotes.size, "quote") %><% end %>
+      </p>
+    </div>
+
+    <%= link_to new_quote_path, class: "q-new" do %>
+      <span aria-hidden="true">+</span>
+      <span>New Quote</span>
+    <% end %>
+  </div>
+
+  <% if @quotes.any? %>
+
+    <%# ── MOBILE CARDS ───────────────────────────── %>
+    <div class="q-mobile">
+      <div class="q-stack">
+        <% @quotes.each do |quote| %>
+          <%
+            label    = quote.quote_number.presence || "QT-#{quote.id}"
+            customer = quote.customer&.first_name.presence || "Unknown Customer"
+          %>
+          <article class="q-card">
+            <div class="q-card-top">
+              <%= link_to label, quote_path(quote), class: "q-num" %>
+              <% if quote.approved %>
+                <span class="q-badge is-approved"><span class="q-badge-dot"></span>Approved</span>
+              <% else %>
+                <span class="q-badge is-pending"><span class="q-badge-dot"></span>Pending</span>
+              <% end %>
+            </div>
+
+            <p class="q-customer"><%= customer %></p>
+
+            <div class="q-card-bottom">
+              <div class="q-amount"><%= number_to_currency(quote.total_amount) %></div>
+              <div class="q-actions">
+                <%= link_to "View", quote_path(quote), class: "q-btn q-btn-view" %>
+                <%= link_to "Edit", edit_quote_path(quote), class: "q-btn q-btn-edit" %>
+              </div>
+            </div>
+          </article>
+        <% end %>
+      </div>
+    </div>
+
+    <%# ── DESKTOP TABLE ──────────────────────────── %>
+    <div class="q-desktop">
+      <div class="q-table-wrap">
+        <table class="q-table">
+          <thead>
+            <tr>
+              <th>Quote #</th>
+              <th>Customer</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th class="q-td-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @quotes.each do |quote| %>
+              <%
+                label    = quote.quote_number.presence || "QT-#{quote.id}"
+                customer = quote.customer&.first_name.presence || "Unknown Customer"
+              %>
+              <tr>
+                <td><%= link_to label, quote_path(quote), class: "q-num" %></td>
+                <td style="font-weight:600; color:#374151;"><%= customer %></td>
+                <td><span class="q-amount"><%= number_to_currency(quote.total_amount) %></span></td>
+                <td>
+                  <% if quote.approved %>
+                    <span class="q-badge is-approved"><span class="q-badge-dot"></span>Approved</span>
+                  <% else %>
+                    <span class="q-badge is-pending"><span class="q-badge-dot"></span>Pending</span>
+                  <% end %>
+                </td>
+                <td class="q-td-right">
+                  <div class="q-actions">
+                    <%= link_to "View", quote_path(quote), class: "q-btn q-btn-view" %>
+                    <%= link_to "Edit", edit_quote_path(quote), class: "q-btn q-btn-edit" %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  <% else %>
+    <div class="q-empty">
+      <h3>No quotes yet</h3>
+      <p>Get started by creating your first customer estimate.</p>
+      <%= link_to "Create First Quote", new_quote_path, class: "q-new" %>
+    </div>
+  <% end %>
+</div>

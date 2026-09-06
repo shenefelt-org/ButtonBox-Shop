@@ -1,4 +1,5 @@
 class ShopController < ApplicationController
+  allow_unauthenticated_access
   def index
     @products = Product.all
   end

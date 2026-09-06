@@ -1,19 +1,21 @@
 Rails.application.routes.draw do
+  # **** RESOURCES ROUTES ****
   resources :customers
-  get "shop/index"
-  get "shop/show"
-  get "shop/create"
-  get "shop/edit"
-  get "shop/new"
-  get "shop/destroy"
-  get "home/index"
+  resources :shop
+  resources :quotes
+  resources :admin_consoles, path: "admin", controller: "admin_consoles"
+  resources :products
+  
+  # about me 
+  get "/riley", to: "home#index"
+
   supabase_authentication_routes
   get "signup", to: "registrations#new"
   post "signup", to: "registrations#create"
 
-  get  "login",  to: "sessions#new"
+  get  "login",  to: "sessions#new", as: :login
   post "login",  to: "sessions#create"
-  delete "logout", to: "sessions#destroy"
+  delete "logout", to: "sessions#destroy", as: :logout
 
   root "home#index"
 end

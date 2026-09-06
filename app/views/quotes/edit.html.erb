@@ -1,0 +1,42 @@
+<% content_for :title, "Edit Quote #{@quote.quote_number.presence || "QT-#{@quote.id}"} · ButtonBox" %>
+
+<div class="max-w-2xl mx-auto px-4 py-8 sm:py-12">
+  <!-- Top Header Bar -->
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-surface-border">
+    <div>
+      <div class="flex items-center gap-2">
+        <h1 class="text-2xl font-bold text-surface-text tracking-tight">
+          Edit Quote <%= @quote.quote_number.presence || "QT-#{@quote.id}" %>
+        </h1>
+        <div class="w-4 h-4 rounded-full bg-[#A3C944] border border-[#82A62D] shadow-sm flex items-center justify-center shrink-0">
+          <div class="grid grid-cols-2 gap-0.5">
+            <div class="w-0.5 h-0.5 rounded-full bg-[#526B13]"></div>
+            <div class="w-0.5 h-0.5 rounded-full bg-[#526B13]"></div>
+            <div class="w-0.5 h-0.5 rounded-full bg-[#526B13]"></div>
+            <div class="w-0.5 h-0.5 rounded-full bg-[#526B13]"></div>
+          </div>
+        </div>
+      </div>
+      <p class="text-xs text-nav-muted mt-1">
+        Update parameters or trigger a manual email copy to <%= @quote.customer&.first_name || "the customer" %>.
+      </p>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex items-center gap-2 self-start sm:self-auto">
+      <%= button_to quote_path(@quote, resend_email: true),
+          method: :patch,
+          class: "inline-flex items-center gap-2 bg-surface-bg hover:bg-surface-border text-surface-text border border-surface-border font-semibold px-4 py-2.5 rounded-xl transition text-xs shadow-sm cursor-pointer" do %>
+        <svg class="w-4 h-4 text-periwinkle" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+        </svg>
+        <span>Resend Email</span>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Main Form Card -->
+  <div class="bg-white border border-surface-border rounded-2xl p-6 sm:p-8 shadow-[0_8px_30px_rgba(104,95,214,0.08)]">
+    <%= render "form", quote: @quote %>
+  </div>
+</div>

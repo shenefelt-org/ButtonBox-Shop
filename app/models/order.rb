@@ -1,4 +1,4 @@
 class Order < ApplicationRecord
-  belongs_to :user
-  has_one :tax_rate
+  belongs_to :customer
+  belongs_to :tax_rate
 end

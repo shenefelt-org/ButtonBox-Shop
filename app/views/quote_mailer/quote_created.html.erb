@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </head>
+  <body style="margin: 0; padding: 0; background-color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased;">
+    
+    <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #f8fafc; padding: 40px 16px;">
+      <tr>
+        <td align="center">
+          
+          <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width: 580px; background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px -5px rgba(104, 95, 214, 0.08);">
+            
+            <!-- Header with Lime Green & Periwinkle Sewing Buttons -->
+            <tr>
+              <td style="padding: 32px 32px 24px 32px; border-bottom: 1px solid #f1f5f9; background-color: #ffffff;">
+                <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td valign="middle">
+                      <span style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #64748b; display: block; margin-bottom: 4px;">ButtonBox Estimate</span>
+                      <h1 style="margin: 0; font-size: 22px; font-weight: 800; color: #0f172a; tracking-tight: -0.02em;">
+                        <%= @quote.quote_number.presence || "QT-#{@quote.id}" %>
+                      </h1>
+                    </td>
+                    
+                    <!-- Decorative Sewing Buttons -->
+                    <td align="right" valign="middle">
+                      <table role="presentation" border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <!-- Bright Lime Accent Button -->
+                          <td style="padding-right: 6px;">
+                            <div style="width: 20px; height: 20px; background-color: #A3C944; border-radius: 50%; border: 1px solid #82A62D; text-align: center; line-height: 20px;">
+                              <span style="color: #526B13; font-size: 10px; font-weight: bold; line-height: 1;">::</span>
+                            </div>
+                          </td>
+                          <!-- Periwinkle Accent Button -->
+                          <td>
+                            <div style="width: 24px; height: 24px; background-color: #685FD6; border-radius: 50%; border: 1px solid #4F46E5; text-align: center; line-height: 24px;">
+                              <span style="color: #ffffff; font-size: 12px; font-weight: bold; line-height: 1;">::</span>
+                            </div>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- Body Section -->
+            <tr>
+              <td style="padding: 32px;">
+                <p style="margin: 0 0 16px 0; font-size: 16px; font-weight: 600; color: #0f172a;">
+                  Hello <%= @customer&.first_name.presence || @customer&.name || "Customer" %>,
+                </p>
+                <p style="margin: 0 0 28px 0; font-size: 14px; color: #475569; line-height: 1.6;">
+                  We’ve prepared a custom quote for your account. Below is the summary breakdown:
+                </p>
+
+                <!-- Data Summary Block -->
+                <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 28px; border-collapse: separate;">
+                  
+                  <tr>
+                    <td style="padding: 16px 20px; border-bottom: 1px solid #e2e8f0; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b;">
+                      Reference ID
+                    </td>
+                    <td align="right" style="padding: 16px 20px; border-bottom: 1px solid #e2e8f0; font-size: 14px; font-weight: 700; color: #0f172a;">
+                      <%= @quote.quote_number.presence || "QT-#{@quote.id}" %>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td style="padding: 16px 20px; border-bottom: 1px solid #e2e8f0; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b;">
+                      Approval Status
+                    </td>
+                    <td align="right" style="padding: 16px 20px; border-bottom: 1px solid #e2e8f0;">
+                      <% if @quote.approved %>
+                        <span style="display: inline-block; padding: 4px 12px; font-size: 11px; font-weight: 700; color: #526B13; background-color: rgba(163, 201, 68, 0.2); border: 1px solid rgba(130, 166, 45, 0.4); border-radius: 20px;">
+                          Approved
+                        </span>
+                      <% else %>
+                        <span style="display: inline-block; padding: 4px 12px; font-size: 11px; font-weight: 700; color: #b45309; background-color: #fef3c7; border: 1px solid #fde68a; border-radius: 20px;">
+                          Pending Approval
+                        </span>
+                      <% end %>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td style="padding: 20px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b;">
+                      Total Amount
+                    </td>
+                    <td align="right" style="padding: 20px; font-size: 22px; font-weight: 800; color: #685FD6;">
+                      <%= number_to_currency(@quote.total_amount) %>
+                    </td>
+                  </tr>
+                </table>
+
+                <!-- Call to Action -->
+                <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td align="center" style="padding: 8px 0;">
+                      <a href="<%= quote_url(@quote) %>" style="display: inline-block; background-color: #685FD6; color: #ffffff; font-size: 14px; font-weight: 700; text-decoration: none; padding: 14px 32px; border-radius: 12px; box-shadow: 0 4px 12px rgba(104, 95, 214, 0.25);">
+                        View Full Quote Details &rarr;
+                      </a>
+                    </td>
+                  </tr>
+                </table>
+
+              </td>
+            </tr>
+
+            <!-- Footer -->
+            <tr>
+              <td style="padding: 24px 32px; background-color: #f8fafc; border-top: 1px solid #e2e8f0; text-align: center;">
+                <p style="margin: 0 0 4px 0; font-size: 12px; color: #64748b;">
+                  Sent automatically by <strong>ButtonBox</strong>
+                </p>
+                <p style="margin: 0; font-size: 11px; color: #94a3b8;">
+                  If you have questions regarding this quote, reply directly to this email.
+                </p>
+              </td>
+            </tr>
+
+          </table>
+        </td>
+      </tr>
+    </table>
+
+  </body>
+</html>

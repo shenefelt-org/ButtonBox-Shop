@@ -74,3 +74,9 @@ gem "dotenv-rails", "~> 3.2"
 gem "httparty", "~> 0.24.2"
 
 gem "supabase-rails", "~> 1.0"
+
+gem "pry", "~> 0.16.0"
+
+gem "letter_opener", "~> 1.10"
+
+gem "premailer-rails", "~> 1.12"

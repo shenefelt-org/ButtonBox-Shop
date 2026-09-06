@@ -1,4 +1,87 @@
-<div>
-  <h1 class="font-bold text-4xl">Shop#index</h1>
-  <p>Find me in app/views/shop/index.html.erb</p>
+<div class="max-w-[1000px] mx-auto px-6 py-10">
+  <!-- Top Banner with Sewing Buttons -->
+  <div class="bg-white border border-surface-border rounded-2xl p-6 mb-8 shadow-[0_4px_20px_rgba(104,95,214,0.05)] flex flex-col sm:flex-row items-center justify-between gap-4">
+    <div>
+      <h1 class="text-2xl font-extrabold text-surface-text tracking-tight">Shop our Inventory!</h1>
+      <p class="text-sm text-nav-muted mt-1">Services to meet any needs</p>
+    </div>
+
+    <!-- Decorative Sewing Buttons Row -->
+    <div class="flex items-center gap-3">
+      <!-- Chartreuse Button -->
+      <div class="w-8 h-8 rounded-full bg-[#A3C944] border-2 border-[#82A62D] shadow-sm flex items-center justify-center cursor-pointer hover:scale-110 transition-transform" title="Chartreuse Accent">
+        <div class="grid grid-cols-2 gap-0.5">
+          <div class="w-1 h-1 rounded-full bg-[#526B13]"></div>
+          <div class="w-1 h-1 rounded-full bg-[#526B13]"></div>
+          <div class="w-1 h-1 rounded-full bg-[#526B13]"></div>
+          <div class="w-1 h-1 rounded-full bg-[#526B13]"></div>
+        </div>
+      </div>
+
+      <!-- Periwinkle Button -->
+      <div class="w-9 h-9 rounded-full bg-periwinkle border-2 border-periwinkle-dark shadow-sm flex items-center justify-center cursor-pointer hover:scale-110 transition-transform" title="Periwinkle Accent">
+        <div class="grid grid-cols-2 gap-0.5">
+          <div class="w-1 h-1 rounded-full bg-[#2D2B4A]"></div>
+          <div class="w-1 h-1 rounded-full bg-[#2D2B4A]"></div>
+          <div class="w-1 h-1 rounded-full bg-[#2D2B4A]"></div>
+          <div class="w-1 h-1 rounded-full bg-[#2D2B4A]"></div>
+        </div>
+      </div>
+
+      <!-- Vermillion Button -->
+      <div class="w-8 h-8 rounded-full bg-[#E34234] border-2 border-[#B82B1F] shadow-sm flex items-center justify-center cursor-pointer hover:scale-110 transition-transform" title="Vermillion Accent">
+        <div class="grid grid-cols-2 gap-0.5">
+          <div class="w-1 h-1 rounded-full bg-[#5C110A]"></div>
+          <div class="w-1 h-1 rounded-full bg-[#5C110A]"></div>
+          <div class="w-1 h-1 rounded-full bg-[#5C110A]"></div>
+          <div class="w-1 h-1 rounded-full bg-[#5C110A]"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Grid -->
+  <% if @products.any? %>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <% @products.each do |product| %>
+        <div class="bg-white border border-surface-border rounded-xl p-5 shadow-[0_4px_20px_rgba(104,95,214,0.03)] hover:shadow-md transition-shadow flex flex-col justify-between">
+          <div>
+            <div class="flex items-start justify-between gap-2 mb-2">
+              <h2 class="text-base font-bold text-surface-text leading-snug"><%= product.title %></h2>
+              <% if product.respond_to?(:active) && product.active %>
+                <span class="bg-periwinkle-light text-periwinkle-dark text-[10px] font-bold px-2 py-0.5 rounded-full border border-surface-subtle uppercase">In Stock</span>
+              <% end %>
+            </div>
+            
+            <% if product.respond_to?(:description) && product.description.present? %>
+              <p class="text-xs text-nav-muted line-clamp-2 mb-4"><%= product.description %></p>
+            <% end %>
+          </div>
+
+          <div class="flex items-center justify-between pt-4 border-t border-surface-subtle mt-4">
+            <span class="text-lg font-extrabold text-periwinkle-dark">
+              <%= number_to_currency(product.price_in_cents / 100.0) %>
+            </span>
+
+            <!-- Option 3: Button with Sewing Accent -->
+            <%= link_to product_path(product), class: "inline-flex items-center gap-2 bg-periwinkle hover:bg-periwinkle-dark text-white text-xs font-semibold px-3 py-2 rounded-lg transition-colors duration-200 no-underline shadow-sm" do %>
+              <span class="w-3.5 h-3.5 rounded-full bg-[#A3C944] border border-[#82A62D] flex items-center justify-center shrink-0">
+                <span class="grid grid-cols-2 gap-0.5">
+                  <span class="w-0.5 h-0.5 rounded-full bg-[#526B13]"></span>
+                  <span class="w-0.5 h-0.5 rounded-full bg-[#526B13]"></span>
+                  <span class="w-0.5 h-0.5 rounded-full bg-[#526B13]"></span>
+                  <span class="w-0.5 h-0.5 rounded-full bg-[#526B13]"></span>
+                </span>
+              </span>
+              <span>View</span>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="bg-white border border-surface-border rounded-xl p-12 text-center">
+      <p class="text-nav-muted text-sm font-medium">No products available at the moment.</p>
+    </div>
+  <% end %>
 </div>

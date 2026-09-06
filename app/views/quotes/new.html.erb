@@ -1,0 +1,58 @@
+<% content_for :title, "New Quote · ButtonBox" %>
+
+<div class="max-w-3xl mx-auto px-4 py-8 sm:py-12">
+  <!-- Back Navigation with Chartreuse Sewing Button -->
+  <div class="mb-6">
+    <%= link_to quotes_path, class: "inline-flex items-center gap-2.5 text-sm font-semibold text-nav-muted hover:text-periwinkle transition no-underline" do %>
+      <span class="w-4 h-4 rounded-full bg-[#A3C944] border border-[#82A62D] flex items-center justify-center shrink-0">
+        <span class="grid grid-cols-2 gap-0.5">
+          <span class="w-0.5 h-0.5 rounded-full bg-[#526B13]"></span>
+          <span class="w-0.5 h-0.5 rounded-full bg-[#526B13]"></span>
+          <span class="w-0.5 h-0.5 rounded-full bg-[#526B13]"></span>
+          <span class="w-0.5 h-0.5 rounded-full bg-[#526B13]"></span>
+        </span>
+      </span>
+      <span>Back to Quotes</span>
+    <% end %>
+  </div>
+
+  <div class="bg-white border border-surface-border rounded-2xl shadow-[0_8px_30px_rgba(104,95,214,0.08)] p-6 sm:p-10 relative overflow-hidden">
+    <!-- Header with Sewing Button Accent Row -->
+    <div class="flex items-center justify-between gap-4 mb-8 pb-6 border-b border-surface-border">
+      <div>
+        <h1 class="text-2xl sm:text-3xl font-bold text-surface-text tracking-tight">Create New Quote</h1>
+        <p class="text-xs text-nav-muted mt-1">Generate a new estimate for a customer.</p>
+      </div>
+
+      <!-- Sewing Button Accent Row -->
+      <div class="flex items-center gap-1.5">
+        <div class="w-5 h-5 rounded-full bg-[#A3C944] border border-[#82A62D] shadow-sm flex items-center justify-center">
+          <div class="grid grid-cols-2 gap-0.5">
+            <div class="w-0.5 h-0.5 rounded-full bg-[#526B13]"></div>
+            <div class="w-0.5 h-0.5 rounded-full bg-[#526B13]"></div>
+            <div class="w-0.5 h-0.5 rounded-full bg-[#526B13]"></div>
+            <div class="w-0.5 h-0.5 rounded-full bg-[#526B13]"></div>
+          </div>
+        </div>
+        <div class="w-6 h-6 rounded-full bg-periwinkle border border-periwinkle-dark shadow-sm flex items-center justify-center">
+          <div class="grid grid-cols-2 gap-0.5">
+            <div class="w-0.5 h-0.5 rounded-full bg-[#2D2B4A]"></div>
+            <div class="w-0.5 h-0.5 rounded-full bg-[#2D2B4A]"></div>
+            <div class="w-0.5 h-0.5 rounded-full bg-[#2D2B4A]"></div>
+            <div class="w-0.5 h-0.5 rounded-full bg-[#2D2B4A]"></div>
+          </div>
+        </div>
+        <div class="w-5 h-5 rounded-full bg-[#E34234] border border-[#B82B1F] shadow-sm flex items-center justify-center">
+          <div class="grid grid-cols-2 gap-0.5">
+            <div class="w-0.5 h-0.5 rounded-full bg-[#5C110A]"></div>
+            <div class="w-0.5 h-0.5 rounded-full bg-[#5C110A]"></div>
+            <div class="w-0.5 h-0.5 rounded-full bg-[#5C110A]"></div>
+            <div class="w-0.5 h-0.5 rounded-full bg-[#5C110A]"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%= render "form", quote: @quote %>
+  </div>
+</div>

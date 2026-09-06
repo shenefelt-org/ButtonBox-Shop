@@ -1,0 +1,80 @@
+<% content_for :title, "Quote #{@quote.quote_number.presence || "QT-#{@quote.id}"} · ButtonBox" %>
+
+<div class="max-w-3xl mx-auto px-4 py-8 sm:py-12">
+  <!-- Header Bar -->
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-surface-border">
+    <div class="flex items-center gap-3">
+      <%= link_to quotes_path, class: "p-2 rounded-xl bg-surface-bg hover:bg-surface-border text-nav-muted hover:text-surface-text transition no-underline" do %>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+      <% end %>
+      <div>
+        <div class="flex items-center gap-2">
+          <h1 class="text-2xl font-bold text-surface-text tracking-tight">
+            <%= @quote.quote_number.presence || "QT-#{@quote.id}" %>
+          </h1>
+          <div class="w-4 h-4 rounded-full bg-periwinkle border border-periwinkle-dark shadow-sm flex items-center justify-center shrink-0">
+            <div class="grid grid-cols-2 gap-0.5">
+              <div class="w-0.5 h-0.5 rounded-full bg-white"></div>
+              <div class="w-0.5 h-0.5 rounded-full bg-white"></div>
+              <div class="w-0.5 h-0.5 rounded-full bg-white"></div>
+              <div class="w-0.5 h-0.5 rounded-full bg-white"></div>
+            </div>
+          </div>
+        </div>
+        <p class="text-xs text-nav-muted mt-0.5">Created on <%= @quote.created_at.strftime("%B %d, %Y") %></p>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex items-center gap-2 self-start sm:self-auto">
+      <%= button_to quote_path(@quote, resend_email: true),
+          method: :patch,
+          class: "inline-flex items-center gap-2 bg-surface-bg hover:bg-surface-border text-surface-text border border-surface-border font-semibold px-4 py-2.5 rounded-xl transition text-xs shadow-sm cursor-pointer" do %>
+        <svg class="w-4 h-4 text-periwinkle" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+        </svg>
+        <span>Resend Email</span>
+      <% end %>
+
+      <%= link_to "Edit", edit_quote_path(@quote), class: "inline-flex items-center gap-2 bg-periwinkle hover:bg-periwinkle-dark text-white font-semibold px-4 py-2.5 rounded-xl transition text-xs shadow-sm no-underline" %>
+    </div>
+  </div>
+
+  <!-- Quote Details Card -->
+  <div class="bg-white border border-surface-border rounded-2xl p-6 sm:p-8 shadow-[0_8px_30px_rgba(104,95,214,0.08)] space-y-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 pb-6 border-b border-surface-border">
+      <div>
+        <span class="block text-xs font-bold uppercase tracking-wider text-nav-muted mb-1">Customer</span>
+        <p class="text-base font-bold text-surface-text m-0"><%= @quote.customer&.first_name || "N/A" %></p>
+        <p class="text-xs text-nav-muted m-0 mt-0.5"><%= @quote.customer&.email || "No email on file" %></p>
+      </div>
+
+      <div>
+        <span class="block text-xs font-bold uppercase tracking-wider text-nav-muted mb-1">Approval Status</span>
+        <% if @quote.approved %>
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#A3C944]/15 text-[#526B13] border border-[#82A62D]/30">
+            <span class="w-2 h-2 rounded-full bg-[#82A62D]"></span>
+            Approved
+          </span>
+        <% else %>
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200">
+            <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+            Pending Approval
+          </span>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="bg-surface-bg border border-surface-border rounded-xl p-6 flex items-center justify-between">
+      <div>
+        <span class="block text-xs font-bold uppercase tracking-wider text-nav-muted">Total Quote Value</span>
+        <p class="text-xs text-nav-muted m-0 mt-0.5">Calculated estimate for customer approval</p>
+      </div>
+      <span class="text-3xl font-extrabold text-periwinkle-dark">
+        <%= number_to_currency(@quote.total_amount) %>
+      </span>
+    </div>
+  </div>
+</div>

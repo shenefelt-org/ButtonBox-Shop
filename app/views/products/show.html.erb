@@ -1,9 +1,9 @@
 <% content_for :title, "#{@product.title} · ButtonBox" %>
 
 <div class="max-w-3xl mx-auto px-4 py-8 sm:py-12">
-  <!-- Back Navigation with Chartreuse Sewing Button -->
+  <!-- Back Navigation to Shop Index -->
   <div class="mb-6">
-    <%= link_to products_path, class: "inline-flex items-center gap-2.5 text-sm font-semibold text-nav-muted hover:text-periwinkle transition" do %>
+    <%= link_to shop_index_path, class: "inline-flex items-center gap-2.5 text-sm font-semibold text-nav-muted hover:text-periwinkle transition" do %>
       <span class="w-4 h-4 rounded-full bg-[#A3C944] border border-[#82A62D] flex items-center justify-center shrink-0">
         <span class="grid grid-cols-2 gap-0.5">
           <span class="w-0.5 h-0.5 rounded-full bg-[#526B13]"></span>
@@ -98,7 +98,7 @@
     <!-- Action Controls -->
     <div class="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-surface-border">
       
-      <!-- Edit Item Link with White/Periwinkle Sewing Button -->
+      <!-- Edit Item Link -->
       <%= link_to edit_product_path(@product), class: "inline-flex items-center gap-2.5 bg-periwinkle hover:bg-periwinkle-dark text-white font-semibold px-5 py-2.5 rounded-xl transition shadow-sm text-sm" do %>
         <span class="w-4 h-4 rounded-full bg-white/20 border border-white/40 flex items-center justify-center shrink-0">
           <span class="grid grid-cols-2 gap-0.5">
@@ -111,7 +111,7 @@
         <span>Edit Item</span>
       <% end %>
 
-      <!-- Delete Product Button with Vermillion Danger Sewing Button -->
+      <!-- Delete Product Button -->
       <%= button_to product_path(@product), method: :delete, data: { turbo_confirm: "Are you sure you want to delete this item?" }, class: "inline-flex items-center gap-2 text-xs text-red-500 hover:text-red-700 font-semibold px-3 py-2 rounded-lg transition border border-transparent hover:border-red-200 cursor-pointer" do %>
         <span class="w-3.5 h-3.5 rounded-full bg-[#E34234] border border-[#B82B1F] flex items-center justify-center shrink-0">
           <span class="grid grid-cols-2 gap-0.5">

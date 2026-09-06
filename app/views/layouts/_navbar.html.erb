@@ -1,28 +1,350 @@
-<nav class="bg-white border-b border-surface-border shadow-[0_4px_20px_rgba(104,95,214,0.05)] sticky top-0 z-[100]">
-  <div class="max-w-[1000px] mx-auto px-6 h-16 flex justify-between items-center">
-    <!-- Home Link -->
-    <div class="flex items-center h-full">
-      <a href="/" class="text-periwinkle-dark hover:text-periwinkle text-xl font-bold tracking-tight transition-colors duration-200 no-underline leading-none flex items-center">
-        home
-      </a>
-    </div>
+<style>
+  /* ===== NAV FORCE FIX ===== */
+  .bb-nav {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: #fff;
+    border-bottom: 1px solid #e5e7eb;
+    box-shadow: 0 4px 20px rgba(104, 95, 214, 0.05);
+  }
 
-    <!-- Login/Logout Button -->
-    <div class="flex items-center gap-4 h-full">
-      <% active_usr = current_user || (defined?(Current) && Current.user) %>
+  .bb-nav-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+    height: 64px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .bb-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    text-decoration: none;
+    color: #3f3c8c;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 1;
+  }
+
+  .bb-desktop {
+    display: none; /* hidden by default on mobile */
+    align-items: center;
+    gap: 24px;
+  }
+
+  .bb-desktop a,
+  .bb-desktop button {
+    font-size: 14px;
+    font-weight: 600;
+    color: #6b7280;
+    text-decoration: none;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .bb-desktop a:hover,
+  .bb-desktop button:hover {
+    color: #685fd6;
+  }
+
+  .bb-login-btn {
+    background: #685fd6 !important;
+    color: #fff !important;
+    padding: 8px 16px !important;
+    border-radius: 8px !important;
+  }
+
+  .bb-login-btn:hover {
+    background: #554cc2 !important;
+  }
+
+  .bb-toggle {
+    display: inline-flex; /* shown by default on mobile */
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 0;
+    background: transparent;
+    color: #6b7280;
+    cursor: pointer;
+  }
+
+  .bb-toggle svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .bb-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 1100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s ease;
+  }
+
+  .bb-backdrop.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .bb-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: min(82vw, 320px);
+    height: 100vh;
+    background: #fff;
+    border-left: 1px solid #e5e7eb;
+    box-shadow: -8px 0 30px rgba(0,0,0,.12);
+    z-index: 1200;
+    transform: translateX(100%);
+    transition: transform .2s ease;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .bb-drawer.is-open {
+    transform: translateX(0);
+  }
+
+  .bb-drawer-header {
+    height: 64px;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #e5e7eb;
+    color: #3f3c8c;
+    font-weight: 700;
+    font-size: 18px;
+  }
+
+  .bb-drawer-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow-y: auto;
+  }
+
+  .bb-drawer-body a,
+  .bb-drawer-body button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    font-size: 14px;
+    font-weight: 600;
+    color: #6b7280;
+    text-decoration: none;
+    background: transparent;
+    border: 0;
+    padding: 8px 0;
+    cursor: pointer;
+  }
+
+  .bb-drawer-body a:hover,
+  .bb-drawer-body button:hover {
+    color: #685fd6;
+  }
+
+  .bb-drawer-login {
+    text-align: center !important;
+    background: #685fd6 !important;
+    color: #fff !important;
+    padding: 10px 14px !important;
+    border-radius: 8px !important;
+  }
+
+  .bb-email {
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    background: #eef0ff;
+    border: 1px solid #d8dcff;
+    color: #3f3c8c;
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  body.bb-nav-open {
+    overflow: hidden;
+  }
+
+  /* Desktop layout */
+  @media (min-width: 768px) {
+    .bb-desktop {
+      display: flex !important;
+    }
+
+    .bb-toggle,
+    .bb-backdrop,
+    .bb-drawer {
+      display: none !important;
+    }
+  }
+</style>
+
+<nav class="bb-nav" id="bbNav">
+  <div class="bb-nav-inner">
+    <!-- Brand -->
+    <a href="/" class="bb-brand">
+      <span class="inline-flex items-center gap-1 shrink-0">
+        <span class="w-5 h-5 rounded-full bg-[#A3C944] border border-[#82A62D] shadow-sm flex items-center justify-center">
+          <span class="grid grid-cols-2 gap-[1px]">
+            <span class="w-0.5 h-0.5 rounded-full bg-[#526B13]"></span>
+            <span class="w-0.5 h-0.5 rounded-full bg-[#526B13]"></span>
+            <span class="w-0.5 h-0.5 rounded-full bg-[#526B13]"></span>
+            <span class="w-0.5 h-0.5 rounded-full bg-[#526B13]"></span>
+          </span>
+        </span>
+        <span class="w-5 h-5 rounded-full bg-periwinkle border border-periwinkle-dark shadow-sm flex items-center justify-center">
+          <span class="grid grid-cols-2 gap-[1px]">
+            <span class="w-0.5 h-0.5 rounded-full bg-[#2D2B4A]"></span>
+            <span class="w-0.5 h-0.5 rounded-full bg-[#2D2B4A]"></span>
+            <span class="w-0.5 h-0.5 rounded-full bg-[#2D2B4A]"></span>
+            <span class="w-0.5 h-0.5 rounded-full bg-[#2D2B4A]"></span>
+          </span>
+        </span>
+        <span class="w-5 h-5 rounded-full bg-[#E34234] border border-[#B82B1F] shadow-sm flex items-center justify-center">
+          <span class="grid grid-cols-2 gap-[1px]">
+            <span class="w-0.5 h-0.5 rounded-full bg-[#5C110A]"></span>
+            <span class="w-0.5 h-0.5 rounded-full bg-[#5C110A]"></span>
+            <span class="w-0.5 h-0.5 rounded-full bg-[#5C110A]"></span>
+            <span class="w-0.5 h-0.5 rounded-full bg-[#5C110A]"></span>
+          </span>
+        </span>
+      </span>
+      <span>ButtonBox</span>
+    </a>
+
+    <% active_usr = current_user || (defined?(Current) && Current.user) %>
+
+    <!-- Desktop only -->
+    <div class="bb-desktop">
+      <a href="<%= shop_index_path %>">Shop</a>
+      <a href="<%= quotes_path %>"> Quote</a>
+
       <% if active_usr.present? %>
         <% current_user_email = active_usr.try(:email_address) || active_usr.try(:email) %>
         <% if current_user_email.present? %>
-          <span class="bg-periwinkle-light border border-surface-subtle px-3 py-1.5 rounded-md text-xs text-periwinkle-dark font-semibold flex items-center self-center">
-            <%= current_user_email %>
-          </span>
+          <span class="bb-email"><%= current_user_email %></span>
         <% end %>
-        <%= button_to "Logout", logout_path, method: :delete, class: "bg-transparent border-0 text-nav-muted hover:text-periwinkle text-sm font-semibold p-0 transition-colors duration-200 cursor-pointer flex items-center h-full", form_class: "m-0 flex items-center h-full" %>
+
+        <%= button_to "Logout",
+            logout_path,
+            method: :delete,
+            class: "",
+            form_class: "m-0" %>
       <% else %>
-        <a href="/session/new" class="bg-periwinkle hover:bg-periwinkle-dark text-white px-4 py-2 rounded-md text-sm font-semibold transition-colors duration-200 no-underline flex items-center">
-          Login
-        </a>
+        <a href="/login" class="bb-login-btn">Login</a>
       <% end %>
     </div>
+
+    <!-- Mobile only toggle -->
+    <button type="button" class="bb-toggle" id="bbNavToggle" aria-label="Open menu">
+      <svg id="bbOpenIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+      </svg>
+      <svg id="bbCloseIcon" style="display:none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
   </div>
+
+  <!-- Mobile backdrop -->
+  <div class="bb-backdrop" id="bbNavBackdrop"></div>
+
+  <!-- Mobile drawer -->
+  <aside class="bb-drawer" id="bbNavDrawer" aria-hidden="true">
+    <div class="bb-drawer-header">
+      <span>Menu</span>
+      <button type="button" class="bb-toggle" id="bbNavClose" aria-label="Close menu">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="bb-drawer-body">
+      <a href="<%= shop_index_path %>">Shop</a>
+      <a href="<%= quotes_path %>"> Quotes </a>
+
+      <% if active_usr.present? %>
+        <% current_user_email = active_usr.try(:email_address) || active_usr.try(:email) %>
+        <% if current_user_email.present? %>
+          <span class="bb-email"><%= current_user_email %></span>
+        <% end %>
+
+        <%= button_to "Logout",
+            logout_path,
+            method: :delete,
+            class: "",
+            form_class: "m-0" %>
+      <% else %>
+        <a href="/login" class="bb-drawer-login">Login</a>
+      <% end %>
+    </div>
+  </aside>
 </nav>
+
+<script>
+  (function () {
+    const toggle = document.getElementById('bbNavToggle');
+    const closeBtn = document.getElementById('bbNavClose');
+    const backdrop = document.getElementById('bbNavBackdrop');
+    const drawer = document.getElementById('bbNavDrawer');
+    const openIcon = document.getElementById('bbOpenIcon');
+    const closeIcon = document.getElementById('bbCloseIcon');
+
+    if (!toggle || !drawer || !backdrop) return;
+
+    function openMenu() {
+      drawer.classList.add('is-open');
+      backdrop.classList.add('is-open');
+      document.body.classList.add('bb-nav-open');
+      drawer.setAttribute('aria-hidden', 'false');
+      openIcon.style.display = 'none';
+      closeIcon.style.display = 'block';
+    }
+
+    function closeMenu() {
+      drawer.classList.remove('is-open');
+      backdrop.classList.remove('is-open');
+      document.body.classList.remove('bb-nav-open');
+      drawer.setAttribute('aria-hidden', 'true');
+      openIcon.style.display = 'block';
+      closeIcon.style.display = 'none';
+    }
+
+    toggle.addEventListener('click', function () {
+      if (drawer.classList.contains('is-open')) closeMenu();
+      else openMenu();
+    });
+
+    closeBtn && closeBtn.addEventListener('click', closeMenu);
+    backdrop.addEventListener('click', closeMenu);
+
+    drawer.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', closeMenu);
+    });
+
+    window.addEventListener('resize', function () {
+      if (window.innerWidth >= 768) closeMenu();
+    });
+  })();
+</script>
