@@ -71,7 +71,7 @@ gem "supabase-rb", "~> 3.2"
 
 gem "dotenv-rails", "~> 3.2"
 
-gem "httparty", "~> 0.24.2"
+gem "httparty", "~> 0.24.3"
 
 gem "supabase-rails", "~> 1.0"
 
